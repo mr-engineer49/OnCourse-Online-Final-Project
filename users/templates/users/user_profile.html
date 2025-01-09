@@ -1,0 +1,120 @@
+{% extends 'courses/base.html' %} {% block content %}
+<section class="bg-gray-100 py-10">
+  <div class="container mx-auto px-6">
+    {% if is_learner %}
+    <!-- Learner Profile Section -->
+    <div class="bg-white shadow-md rounded-lg p-6">
+      <div class="flex items-center space-x-6">
+        <!-- Profile Picture -->
+        <div class="w-24 h-24 rounded-full overflow-hidden">
+          <img
+            src="{{ user.profile_picture.url }}"
+            alt="{{ user.username }}'s profile picture"
+            class="w-full h-full object-cover"
+          />
+        </div>
+        <!-- User Info -->
+        <div>
+          <h2 class="text-3xl font-bold">{{ user.username }}</h2>
+          <p class="text-gray-600">{{ user.email }}</p>
+          <p class="text-gray-500 text-sm">
+            Joined on {{ user.date_joined|date:"F j, Y" }}
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Enrolled Courses -->
+    <h3 class="text-2xl font-semibold mt-10">Your Enrollments</h3>
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mt-6">
+      {% for course in user.courses.all %}
+      <div class="bg-white rounded-lg shadow-lg overflow-hidden">
+        <img
+          src="{{ course.image_url }}"
+          alt="{{ course.title }}"
+          class="w-full h-48 object-cover"
+        />
+        <div class="p-4">
+          <h4 class="text-lg font-semibold">{{ course.title }}</h4>
+          <a
+            href="{% url 'courses:course_detail' course.id %}"
+            class="text-blue-500 hover:text-blue-700 hover:underline"
+            >View Course</a
+          >
+        </div>
+      </div>
+      {% empty %}
+      <p class="col-span-3 text-center text-gray-500">
+        You are not enrolled in any courses.
+      </p>
+      {% endfor %}
+    </div>
+    {% elif is_instructor %}
+    <!-- Instructor Profile Section -->
+    <div class="bg-white shadow-md rounded-lg p-6">
+      <h2 class="text-3xl font-bold">
+        Welcome, Instructor {{ user.username }}!
+      </h2>
+      <p class="text-gray-600">
+        Manage your courses or create new ones to help learners grow.
+      </p>
+      <div class="mt-4">
+        <a
+          href="{% url 'users:create_course' %}"
+          class="bg-blue-500 text-white px-6 py-2 rounded hover:bg-blue-600"
+        >
+          Create Course
+        </a>
+      </div>
+    </div>
+
+    <!-- Instructor Courses -->
+    <h3 class="text-2xl font-semibold mt-10">Your Courses</h3>
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mt-6">
+      {% for course in courses %}
+      <div class="bg-white rounded-lg shadow-lg overflow-hidden">
+        <img
+          src="{{ course.image_url }}"
+          alt="{{ course.title }}"
+          class="w-full h-48 object-cover"
+        />
+        <div class="p-4">
+          <h4 class="text-lg font-semibold">{{ course.title }}</h4>
+          <a
+            href="{% url 'courses:course_detail' course.id %}"
+            class="text-blue-500 hover:text-blue-700 hover:underline"
+            >Manage Course</a
+          >
+        </div>
+      </div>
+      {% empty %}
+      <p class="col-span-3 text-center text-gray-500">
+        You have not created any courses yet.
+      </p>
+      {% endfor %}
+    </div>
+    {% elif is_institution %}
+    <!-- Institution Profile Section -->
+    <div class="bg-white shadow-md rounded-lg p-6">
+      <h2 class="text-3xl font-bold">Welcome, Institution!</h2>
+      <p class="text-gray-600">
+        Manage your institution's courses and learners.
+      </p>
+      <div class="mt-4">
+        <a
+          href="{% url 'users:create_course' %}"
+          class="bg-blue-500 text-white px-6 py-2 rounded hover:bg-blue-600"
+        >
+          Create Course
+        </a>
+      </div>
+    </div>
+    {% else %}
+    <!-- Unknown User Section -->
+    <div class="bg-red-100 border border-red-300 text-red-600 p-4 rounded">
+      <p class="text-lg font-semibold">Error: Unknown user type!</p>
+    </div>
+    {% endif %}
+  </div>
+</section>
+{% endblock %}

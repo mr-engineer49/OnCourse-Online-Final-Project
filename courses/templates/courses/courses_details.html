@@ -1,0 +1,53 @@
+{% extends 'courses/base.html' %} {% block content %}
+<section class="py-10 bg-gray-100">
+  <div class="container mx-auto px-4">
+    <!-- Navigation Links -->
+    <div class="mb-6">
+      <a
+        href="{% url 'courses:course_list' %}"
+        class="inline-block bg-gray-300 text-gray-700 px-4 py-2 rounded hover:bg-gray-400 transition-colors"
+      >
+        Back to Courses
+      </a>
+    </div>
+
+    <!-- Course Details Card -->
+    <div class="bg-white shadow-lg rounded-lg p-6 mb-10">
+      <h1 class="text-4xl font-extrabold text-gray-800 mb-4">
+        {{ course.title }}
+      </h1>
+      <p class="text-lg text-gray-600 mb-6">{{ course.description }}</p>
+      <p class="text-2xl font-bold text-blue-600">Price: ${{ course.price }}</p>
+    </div>
+
+    <!-- Lessons List -->
+    <div class="bg-white shadow-lg rounded-lg p-6">
+      <h2 class="text-3xl font-bold text-gray-800 mb-6">Lessons</h2>
+      {% if course.lessons.all %}
+      <ul class="divide-y divide-gray-200">
+        {% for lesson in course.lessons.all %}
+        <li class="py-4">
+          <a
+            href="{% url 'courses:lesson_detail' course.pk lesson.pk %}"
+            class="block text-lg font-medium text-gray-800 hover:text-blue-500 transition-colors"
+          >
+            {{ lesson.title }}
+          </a>
+        </li>
+        {% endfor %}
+      </ul>
+      {% else %}
+      <p class="text-gray-500 text-lg">No lessons available for this course.</p>
+      {% endif %}
+      <div class="mt-6">
+        <a
+          href="{% url 'courses:add_lesson' course.pk %}"
+          class="inline-block bg-blue-500 text-white px-6 py-3 rounded-lg hover:bg-blue-600 transition-colors"
+        >
+          Add Lesson to Course
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}
