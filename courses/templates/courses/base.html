@@ -24,7 +24,7 @@
             >Courses</a
           >
           <a
-            href="{% url 'forums:forum_detail' %}"
+            href="{% url 'forums:forum_list' %}"
             class="text-gray-700 hover:text-blue-500"
             >Forums</a
           >
@@ -85,6 +85,7 @@
         </div>
       </div>
       <!-- Mobile Menu -->
+      {% comment %}
       <div id="mobile-menu" class="hidden md:hidden">
         <a
           href="{% url 'courses:course_list' %}"
@@ -92,7 +93,7 @@
           >Courses</a
         >
         <a
-          href="{% url 'forums:forum_detail' %}"
+          href="{% url 'forums:forum_page' %}"
           class="block px-4 py-2 text-gray-700 hover:bg-gray-200"
           >Forums</a
         >
@@ -115,6 +116,7 @@
         >
         {% endif %}
       </div>
+      {% endcomment %}
     </nav>
   </header>
   <body class="bg-gray-100 font-sans">

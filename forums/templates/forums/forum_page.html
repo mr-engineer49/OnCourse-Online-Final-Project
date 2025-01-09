@@ -1,0 +1,42 @@
+{% extends 'courses/base.html' %}
+<!-- The form.html template extends the base.html template. -->
+
+{% block content %}
+<div class="container mx-auto px-4 py-6">
+  <!-- Forums Section -->
+  <section class="mb-8">
+    <h1 class="text-2xl font-bold mb-4">Forums</h1>
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+      {% for forum in forums %}
+      <div class="bg-white shadow-md rounded-lg p-4 border">
+        <h2 class="text-lg font-semibold text-blue-600 hover:underline">
+          <a href="#">{{ forum.name }}</a>
+        </h2>
+        <p class="text-gray-600 mt-2">Course: {{ forum.course }}</p>
+      </div>
+      {% endfor %}
+    </div>
+  </section>
+
+  <!-- Threads Section -->
+  <section>
+    <h1 class="text-2xl font-bold mb-4">Threads</h1>
+    <div class="space-y-4">
+      {% for thread in threads %}
+      <div class="bg-white shadow-md rounded-lg p-4 border">
+        <h2 class="text-lg font-semibold text-gray-900">
+          <a href="#" class="text-blue-600 hover:underline"
+            >{{ thread.title }}</a
+          >
+        </h2>
+        <p class="text-sm text-gray-500 mt-2">Created by: {{ thread.user }}</p>
+        <p class="text-sm text-gray-500">Forum: {{ thread.forum }}</p>
+        <p class="text-sm text-gray-500">
+          Created on: {{ thread.created_at|date:"F j, Y, g:i a" }}
+        </p>
+      </div>
+      {% endfor %}
+    </div>
+  </section>
+</div>
+{% endblock %}

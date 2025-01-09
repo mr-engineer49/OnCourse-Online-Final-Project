@@ -1,6 +1,9 @@
 from django.shortcuts import redirect, render, get_object_or_404
+from django.contrib.auth.decorators import login_required
 
 from courses.forms import LessonCreationForm
+from quizzes.forms import QuestionForm
+from quizzes.models import Question
 from .models import Course, Lesson
 
 
@@ -15,7 +18,9 @@ def course_list(request):
 
 def course_detail(request, pk):
     course = get_object_or_404(Course, pk=pk)
-    return render(request, 'courses/courses_details.html', {'course': course})
+    quizz_form = Question.objects.all()
+    print(quizz_form)
+    return render(request, 'courses/courses_details.html', {'course': course, 'quizz_form': quizz_form})
 
 
 def add_lesson(request, course_pk):
@@ -38,3 +43,19 @@ def lesson_detail(request, course_pk, lesson_pk):
     course = get_object_or_404(Course, pk=course_pk)
     lesson = get_object_or_404(Lesson, pk=lesson_pk, course=course)
     return render(request, 'courses/lesson_detail.html', {'lesson': lesson})
+
+@login_required
+def quizz_creation(request):
+    # TODO: Implement quizz creation form here
+    if request.method == 'POST':
+        quizz_form = QuestionForm(request.POST, user=request.user)
+        if quizz_form.is_valid():
+            quizz_form.save()
+            return redirect('courses:course_list')
+        else:
+            print(quizz_form.errors)
+    else:
+        quizz_form = QuestionForm(user=request.user)
+    return render(request, 'courses/quizz_creation.html', {'quizz_form': quizz_form})
+
+

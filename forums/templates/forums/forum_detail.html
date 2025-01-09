@@ -1,0 +1,19 @@
+{% extends 'courses/base.html' %}
+<!-- The form.html template extends the base.html template. -->
+
+{% block content %}
+
+<h1>Forum Details</h1>
+<p>Forum Name: {{ forum.name }}</p>
+<p>Description: {{ forum.description }}</p>
+<p>Created by: {{ forum.created_by }}</p>
+
+<h2>Threads</h2>
+
+{% for thread in forum.threads.all %}
+<p>
+  <a href="{% url 'forums:thread_detail' forum.pk thread.pk %}"
+    >{{ thread.title }}</a
+  >
+</p>
+{% endfor %} {% endblock %}

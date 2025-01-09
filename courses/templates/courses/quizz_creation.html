@@ -1,0 +1,12 @@
+{% extends 'courses/base.html' %}
+<!-- The title block is used to set the title of the page. -->
+{% block title %}Create Quiz{% endblock %}
+<!-- The content block is used to display the main content of the page. -->
+
+{% block content %}
+<h1>Create Quiz</h1>
+<form method="post">
+  {% csrf_token %} {{ quizz_form.as_p }}
+  <button type="submit">Create Quiz</button>
+</form>
+{% endblock %}
