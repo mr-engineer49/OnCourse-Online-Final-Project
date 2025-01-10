@@ -1,71 +1,77 @@
-{% extends 'courses/base.html' %} {% block content %}
-<div class="container mx-auto px-4 py-6">
-  <h1 class="text-3xl font-extrabold text-gray-800 mb-8 text-center">
+{% extends 'courses/base.html' %}
+{% block content %}
+<div class="container mx-auto px-4 py-8">
+  <h1 class="text-4xl font-extrabold text-primary mb-10 text-center">
     Explore Our Courses
   </h1>
-  <div class="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+  <div class="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
     {% for course in courses %}
     <div
-      class="bg-white rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300"
+      class="bg-white rounded-lg shadow-lg hover:shadow-xl overflow-hidden transition-shadow duration-300 group"
     >
+      <!-- Course Image -->
       <div class="relative h-48 bg-gray-200">
-        <!-- Placeholder for image (add course image if available) -->
         <img
           src="{{ course.image.url|default:'/static/images/course-placeholder.jpg' }}"
           alt="{{ course.title }}"
-          class="w-full h-full object-cover"
+          class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
         />
       </div>
+      <!-- Course Details -->
       <div class="p-6">
-        <h2 class="text-xl font-semibold text-gray-800 mb-2 truncate">
+        <h2
+          class="text-xl font-bold text-gray-800 mb-2 truncate group-hover:text-primary transition-colors"
+        >
           {{ course.title }}
         </h2>
-        <p class="text-gray-600 mb-4 text-sm">
-          Instructor:
-          <span class="font-medium">{{ course.instructor.username }}</span>
+        <p class="text-gray-600 text-sm mb-2">
+          Instructor: <span class="font-medium">{{ course.instructor.username }}</span>
         </p>
-        <p class="text-gray-800 font-bold text-lg mb-4">${{ course.price }}</p>
-        <div>
+        <p class="text-gray-800 font-semibold text-lg mb-4">
+          ${{ course.price }}
+        </p>
+        <!-- Call to Action Buttons -->
+        <div class="space-y-2">
           {% if user.is_authenticated and user.is_instructor %}
-          <hr />
+          <hr class="my-2" />
           {% if user == course.instructor %}
           <a
             href="{% url 'courses:course_detail' course.pk %}"
-            class="inline-block bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition-colors"
+            class="inline-block bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition-colors w-full text-center"
           >
             Manage Course
           </a>
           {% else %}
           <a
             href="{% url 'courses:course_enrollment' course.pk %}"
-            class="inline-block bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600 transition-colors"
+            class="inline-block bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-600 transition-colors w-full text-center"
           >
             Enroll Course
           </a>
           {% endif %}
-          <hr />
+          <hr class="my-2" />
           {% elif user.is_authenticated and user.is_learner %}
-          <hr />
+          <hr class="my-2" />
           {% if course.id in enrolled_courses %}
           <a
             href="{% url 'courses:course_detail' course.pk %}"
-            class="inline-block bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600 transition-colors"
+            class="inline-block bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-600 transition-colors w-full text-center"
           >
             Start Course
           </a>
           {% else %}
           <a
             href="{% url 'courses:course_enrollment' course.pk %}"
-            class="inline-block bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition-colors"
+            class="inline-block bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition-colors w-full text-center"
           >
             Enroll Now
           </a>
           {% endif %}
-          <hr />
+          <hr class="my-2" />
           {% else %}
           <a
             href="{% url 'users:login' %}"
-            class="inline-block bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition-colors"
+            class="inline-block bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition-colors w-full text-center"
           >
             Login to Enroll
           </a>

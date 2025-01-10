@@ -5,14 +5,19 @@
     <div class="mb-6">
       <a
         href="{% url 'courses:course_list' %}"
-        class="inline-block bg-gray-300 text-gray-700 px-4 py-2 rounded hover:bg-gray-400 transition-colors"
+        class="inline-block bg-gray-300 text-gray-700 px-6 py-3 rounded-lg hover:bg-gray-400 transition-colors"
       >
         Back to Courses
       </a>
     </div>
 
     <div class="mb-6">
-      <a href="{% url 'courses:quizz_creation' %}">Create Quiz </a>
+      <a
+        href="{% url 'courses:quizz_creation' %}"
+        class="inline-block text-lg text-blue-600 hover:text-blue-800 transition-colors"
+      >
+        Create Quiz
+      </a>
     </div>
 
     <!-- Course Details Card -->
@@ -49,10 +54,10 @@
 
       <!-- Quizzes for the Lesson -->
       {% if quizz_form %}
-      <ul class="mt-2 pl-4 border-l-2 border-blue-500">
+      <ul class="mt-4 pl-4 border-l-2 border-blue-500">
         <li class="text-sm font-semibold text-gray-600 mb-2">Quizzes:</li>
         {% for quizz in quizz_form %}
-        <li class="mb-2">
+        <li class="mb-4">
           <p class="text-gray-700">
             <span class="font-semibold">Quiz:</span> {{ quizz.lesson }}
           </p>
@@ -69,7 +74,7 @@
       {% endif %}
 
       <!-- Add Lesson and Quiz Buttons -->
-      <div class="mt-6 flex gap-4">
+      <div class="mt-8 flex gap-4">
         {% if request.user.is_instructor %}
         <a
           href="{% url 'courses:add_lesson' course.pk %}"
@@ -87,7 +92,6 @@
         <p class="text-gray-500 text-sm">
           You must be an instructor to add lessons and quizzes.
         </p>
-        <a>Answer the following questions: --> </a>
         {% endif %}
       </div>
     </div>

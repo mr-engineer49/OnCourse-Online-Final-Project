@@ -1,12 +1,43 @@
 {% extends 'courses/base.html' %}
+
 <!-- The title block is used to set the title of the page. -->
 {% block title %}Create Quiz{% endblock %}
-<!-- The content block is used to display the main content of the page. -->
 
+<!-- The content block is used to display the main content of the page. -->
 {% block content %}
-<h1>Create Quiz</h1>
-<form method="post">
-  {% csrf_token %} {{ quizz_form.as_p }}
-  <button type="submit">Create Quiz</button>
-</form>
+<section class="py-10 bg-gray-100">
+  <div class="container mx-auto px-4">
+    <!-- Create Quiz Form Card -->
+    <div class="bg-white shadow-lg rounded-lg p-8 mb-10">
+      <h1 class="text-3xl font-extrabold text-gray-800 mb-6">Create Quiz</h1>
+
+      <form method="post" class="space-y-6">
+        {% csrf_token %}
+
+        <!-- Render Form Fields -->
+        <div class="space-y-4">{{ quizz_form.as_p }}</div>
+
+        <!-- Display Form Errors -->
+        {% if quizz_form.errors %}
+        <div class="bg-red-100 text-red-700 p-4 rounded-lg">
+          <strong>There were some errors with your submission:</strong>
+          <ul>
+            {% for field in quizz_form.errors %}
+            <li>{{ field }}</li>
+            {% endfor %}
+          </ul>
+        </div>
+        {% endif %}
+
+        <!-- Submit Button -->
+        <button
+          type="submit"
+          class="w-full bg-blue-500 text-white px-6 py-3 rounded-lg hover:bg-blue-600 transition-colors"
+        >
+          Create Quiz
+        </button>
+      </form>
+    </div>
+  </div>
+</section>
 {% endblock %}

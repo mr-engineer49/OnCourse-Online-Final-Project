@@ -9,8 +9,7 @@ from .models import Course, Enrollment, Lesson
 
 
 def home_page(request):
-    featured_courses = Course.objects.filter(instructor=request.user)
-    return render(request, 'courses/homepage.html', {'featured_courses': featured_courses})
+    return render(request, 'courses/homepage.html')
 
 
 def course_list(request):
@@ -69,7 +68,7 @@ def lesson_detail(request, course_pk, lesson_pk):
     lesson = get_object_or_404(Lesson, pk=lesson_pk, course=course)
     return render(request, 'courses/lesson_detail.html', {'lesson': lesson})
 
-@login_required
+
 def quizz_creation(request):
     # TODO: Implement quizz creation form here
     if request.method == 'POST':
@@ -82,7 +81,6 @@ def quizz_creation(request):
     else:
         quizz_form = QuestionForm(user=request.user)
     return render(request, 'courses/quizz_creation.html', {'quizz_form': quizz_form})
-
 
 
 

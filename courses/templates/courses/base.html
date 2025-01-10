@@ -5,179 +5,135 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- stylesheet -->
-    <link
-      rel="stylesheet"
-      href="https://unpkg.com/@material-tailwind/html@latest/styles/material-tailwind.css"
-    />
-
-    <!-- script -->
-    <script src="https://unpkg.com/@material-tailwind/html@latest/scripts/script-name.js"></script>
+    <!-- Tailwind Configuration -->
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              primary: "#4F46E5", // Indigo for primary buttons
+              secondary: "#6B7280", // Cool gray for text
+              background: "#F9FAFB", // Light gray for background
+            },
+          },
+        },
+      };
+    </script>
   </head>
-  <header class="bg-gray-100 text-black py-6">
-    <!-- Navigation Menu -->
-    <nav class="bg-white shadow-md">
-      <div
-        class="container mx-auto px-4 py-2 flex justify-between items-center"
-      >
-        <!-- Logo -->
-        <div class="text-xl font-bold text-gray-700">
-          <a href="/">YourLogo</a>
-        </div>
-        <!-- Menu Items -->
-        <div class="hidden md:flex space-x-4">
-          <a
-            href="{% url 'courses:course_list' %}"
-            class="text-gray-700 hover:text-blue-500"
-            >Courses</a
-          >
-          <a
-            href="{% url 'forums:forum_list' %}"
-            class="text-gray-700 hover:text-blue-500"
-            >Forums</a
-          >
-          {% if user.is_authenticated %}
-          <a
-            href="{% url 'users:user_profile' %}"
-            class="text-gray-700 hover:text-blue-500"
-            >My Profile</a
-          >
-          <a
-            href="{% url 'users:logout' %}"
-            class="text-gray-700 hover:text-blue-500"
-            >Logout</a
-          >
-          {% else %}
-          <a
-            href="{% url 'users:login' %}"
-            class="text-gray-700 hover:text-blue-500"
-            >Login</a
-          >
-          <a
-            href="{% url 'users:register' %}"
-            class="text-gray-700 hover:text-blue-500"
-            >Register</a
-          >
-          {% endif %}
-        </div>
-        <!-- Mobile Menu Button -->
-        <div class="md:hidden">
-          <button
-            id="mobile-menu-button"
-            class="text-gray-700 hover:text-blue-500 focus:outline-none"
-          >
-            <svg
-              class="w-6 h-6"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                id="menu-icon"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                d="M4 6h16M4 12h16m-7 6h7"
-              ></path>
-              <path
-                id="close-icon"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                d="M6 18L18 6M6 6l12 12"
-                class="hidden"
-              ></path>
-            </svg>
-          </button>
-        </div>
+  <!-- Header -->
+  <header class="bg-primary text-white">
+    <nav class="container mx-auto px-4 py-4 flex justify-between items-center">
+      <!-- Logo -->
+      <div class="text-2xl font-bold">
+        <a href="/" class="hover:text-gray-200">MyApp</a>
       </div>
-      <!-- Mobile Menu -->
-      {% comment %}
-      <div id="mobile-menu" class="hidden md:hidden">
-        <a
-          href="{% url 'courses:course_list' %}"
-          class="block px-4 py-2 text-gray-700 hover:bg-gray-200"
-          >Courses</a
-        >
-        <a
-          href="{% url 'forums:forum_page' %}"
-          class="block px-4 py-2 text-gray-700 hover:bg-gray-200"
-          >Forums</a
-        >
+      <!-- Desktop Menu -->
+      <div class="hidden md:flex space-x-6">
+        <a href="{% url 'courses:course_list' %}" class="hover:text-gray-300">
+          Courses
+        </a>
+        <a href="{% url 'forums:forum_list' %}" class="hover:text-gray-300">
+          Forums
+        </a>
         {% if user.is_authenticated %}
-        <a
-          href="{% url 'users:logout' %}"
-          class="block px-4 py-2 text-gray-700 hover:bg-gray-200"
-          >Logout</a
-        >
+        <a href="{% url 'users:user_profile' %}" class="hover:text-gray-300">
+          Profile
+        </a>
+        <a href="{% url 'users:logout' %}" class="hover:text-gray-300">
+          Logout
+        </a>
         {% else %}
-        <a
-          href="{% url 'users:login' %}"
-          class="block px-4 py-2 text-gray-700 hover:bg-gray-200"
-          >Login</a
-        >
-        <a
-          href="{% url 'users:register' %}"
-          class="block px-4 py-2 text-gray-700 hover:bg-gray-200"
-          >Register</a
-        >
+        <a href="{% url 'users:login' %}" class="hover:text-gray-300">
+          Login
+        </a>
+        <a href="{% url 'users:register' %}" class="hover:text-gray-300">
+          Register
+        </a>
         {% endif %}
       </div>
-      {% endcomment %}
+      <!-- Mobile Menu Button -->
+      <button
+        id="mobile-menu-button"
+        class="md:hidden focus:outline-none"
+        aria-label="Open Menu"
+      >
+        <svg
+          class="w-6 h-6 text-white"
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M4 6h16M4 12h16m-7 6h7"
+          />
+        </svg>
+      </button>
     </nav>
   </header>
-  <body class="bg-gray-100 font-sans">
-    <!-- Main Content -->
-    <main class="container mx-auto px-4 py-6">
-      {% block content %} {% endblock %}
-    </main>
+
+  <!-- Mobile Menu -->
+  <div id="mobile-menu" class="hidden md:hidden bg-primary text-white">
+    <a
+      href="{% url 'courses:course_list' %}"
+      class="block px-4 py-2 hover:bg-primary-dark"
+    >
+      Courses
+    </a>
+    <a
+      href="{% url 'forums:forum_list' %}"
+      class="block px-4 py-2 hover:bg-primary-dark"
+    >
+      Forums
+    </a>
+    {% if user.is_authenticated %}
+    <a
+      href="{% url 'users:user_profile' %}"
+      class="block px-4 py-2 hover:bg-primary-dark"
+    >
+      Profile
+    </a>
+    <a
+      href="{% url 'users:logout' %}"
+      class="block px-4 py-2 hover:bg-primary-dark"
+    >
+      Logout
+    </a>
+    {% else %}
+    <a
+      href="{% url 'users:login' %}"
+      class="block px-4 py-2 hover:bg-primary-dark"
+    >
+      Login
+    </a>
+    <a
+      href="{% url 'users:register' %}"
+      class="block px-4 py-2 hover:bg-primary-dark"
+    >
+      Register
+    </a>
+    {% endif %}
+  </div>
+
+  <body class="bg-background font-sans text-secondary">
+    {% block content %}{% endblock %}
+    <!-- Script for Mobile Menu -->
+    <script>
+      document
+        .getElementById("mobile-menu-button")
+        .addEventListener("click", function () {
+          const menu = document.getElementById("mobile-menu");
+          menu.classList.toggle("hidden");
+        });
+    </script>
   </body>
+  <!-- Footer -->
   <footer class="bg-gray-800 text-gray-400 py-8">
     <div class="container mx-auto text-center">
-      <div class="mb-4">
-        <a href="/" class="text-white hover:text-blue-500 mx-2">Home</a>
-        <a
-          href="{% url 'courses:course_list' %}"
-          class="text-white hover:text-blue-500 mx-2"
-          >Courses</a
-        >
-        <a href="#" class="text-white hover:text-blue-500 mx-2">Forums</a>
-        <a
-          href="{% url 'users:login' %}"
-          class="text-white hover:text-blue-500 mx-2"
-          >Login</a
-        >
-        <a
-          href="{% url 'users:register' %}"
-          class="text-white hover:text-blue-500 mx-2"
-          >Register</a
-        >
-      </div>
-      <div class="mb-4">
-        <a
-          href="https://facebook.com"
-          target="_blank"
-          class="text-gray-400 hover:text-white mx-2"
-        >
-          <i class="fab fa-facebook-f"></i>
-        </a>
-        <a
-          href="https://twitter.com"
-          target="_blank"
-          class="text-gray-400 hover:text-white mx-2"
-        >
-          <i class="fab fa-twitter"></i>
-        </a>
-        <a
-          href="https://instagram.com"
-          target="_blank"
-          class="text-gray-400 hover:text-white mx-2"
-        >
-          <i class="fab fa-instagram"></i>
-        </a>
-      </div>
-      <p>&copy; 2025 My Web Application. All rights reserved.</p>
+      <p>&copy; 2025 MyApp. All rights reserved.</p>
     </div>
   </footer>
 </html>

@@ -15,7 +15,7 @@
         </div>
         <!-- User Info -->
         <div>
-          <h2 class="text-3xl font-bold">{{ user.username }}</h2>
+          <h2 class="text-3xl font-bold text-gray-800">{{ user.username }}</h2>
           <p class="text-gray-600">{{ user.email }}</p>
           <p class="text-gray-500 text-sm">
             Joined on {{ user.date_joined|date:"F j, Y" }}
@@ -34,8 +34,9 @@
           <a
             href="{% url 'courses:course_detail' course.course.pk %}"
             class="text-blue-500 hover:text-blue-700 hover:underline"
-            >{{ course.course.title }}</a
           >
+            {{ course.course.title }}
+          </a>
         </h1>
       </div>
       {% empty %}
@@ -44,10 +45,11 @@
       </p>
       {% endfor %}
     </div>
+
     {% elif is_instructor %}
     <!-- Instructor Profile Section -->
     <div class="bg-white shadow-md rounded-lg p-6">
-      <h2 class="text-3xl font-bold">
+      <h2 class="text-3xl font-bold text-gray-800">
         Welcome, Instructor {{ user.username }}!
       </h2>
       <p class="text-gray-600">
@@ -74,7 +76,9 @@
           class="w-full h-48 object-cover"
         />
         <div class="p-4">
-          <h4 class="text-lg font-semibold">{{ course.title }}</h4>
+          <h4 class="text-lg font-semibold text-gray-800">
+            {{ course.title }}
+          </h4>
           <a
             href="{% url 'courses:course_detail' course.id %}"
             class="text-blue-500 hover:text-blue-700 hover:underline"
@@ -88,10 +92,11 @@
       </p>
       {% endfor %}
     </div>
+
     {% elif is_institution %}
     <!-- Institution Profile Section -->
     <div class="bg-white shadow-md rounded-lg p-6">
-      <h2 class="text-3xl font-bold">Welcome, Institution!</h2>
+      <h2 class="text-3xl font-bold text-gray-800">Welcome, Institution!</h2>
       <p class="text-gray-600">
         Manage your institution's courses and learners.
       </p>
@@ -104,6 +109,7 @@
         </a>
       </div>
     </div>
+
     {% else %}
     <!-- Unknown User Section -->
     <div class="bg-red-100 border border-red-300 text-red-600 p-4 rounded">

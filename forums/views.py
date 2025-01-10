@@ -8,9 +8,16 @@ from .models import Forum, Thread, Post
 def forum_list(request):
     forums = Forum.objects.all()
     threads = Thread.objects.all()
-    is_instructor = request.user.is_instructor
-    is_institution = request.user.is_institution
-    is_learner = request.user.is_learner
+    # Check if the user is authenticated first
+    if request.user.is_authenticated:
+        is_instructor = request.user.is_instructor
+        is_institution = request.user.is_institution
+        is_learner = request.user.is_learner
+    else:
+        # If the user is not authenticated, set these variables to False
+        is_instructor = False
+        is_institution = False
+        is_learner = False
     context={
         'forums': forums,
         'is_instructor': is_instructor,
@@ -19,6 +26,7 @@ def forum_list(request):
         'threads': threads
     }
     return render(request, 'forums/forum_page.html', context)
+
 
 def forum_detail(request, course_pk):
     forum = Forum.objects.filter(course=course_pk)
@@ -31,13 +39,13 @@ def thread_detail(request, forum_pk, thread_pk):
     posts = Post.objects.filter(thread=thread)
     return render(request, 'forums/thread_detail.html', {'thread': thread, 'posts': posts})
 
-@login_required()
+
+
 def thread_create(request):    
     if request.method == 'POST':
         thread_form = ThreadCreateForm(request.POST)
         if thread_form.is_valid():
             thread = thread_form.save(commit=False)
-            thread.user = request.user  # Set the user for the thread
             thread.save()
             return redirect('forums:forum_list')
         else:
