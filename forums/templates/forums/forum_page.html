@@ -62,7 +62,9 @@
             >{{ thread.title }}</a
           >
         </h2>
-        <p class="text-sm text-gray-500 mt-2">Created by: {{ thread.user }}</p>
+        <p class="text-sm text-gray-500 mt-2">
+          Created by: @{{ thread.request.username }}
+        </p>
         <p class="text-sm text-gray-500">Forum: {{ thread.forum }}</p>
         <p class="text-sm text-gray-500">
           Created on: {{ thread.created_at|date:"F j, Y, g:i a" }}

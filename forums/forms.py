@@ -21,11 +21,4 @@ class ForumCreateForm(forms.ModelForm):
 class ThreadCreateForm(forms.ModelForm):
     class Meta:
         model = Thread
-        fields = ['forum', 'user','title']
-
-    def __init__(self, *args, **kwargs):
-        user = kwargs.pop('user', None)  # Pop the 'user' argument from kwargs
-        super().__init__(*args, **kwargs)
-        if user:
-            # Filter the forum queryset to show only forums belonging to the user
-            self.fields['forum'].queryset = Forum.objects.filter(user=user)
+        fields = ['forum','user','title']

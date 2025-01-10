@@ -1,9 +1,9 @@
-{% extends 'courses/base.html' %}
-{% block content %}
+{% extends 'courses/base.html' %} {% block content %}
 <div class="container mx-auto px-4 py-8">
   <h1 class="text-4xl font-extrabold text-primary mb-10 text-center">
     Explore Our Courses
   </h1>
+  {% if courses %}
   <div class="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
     {% for course in courses %}
     <div
@@ -25,8 +25,10 @@
           {{ course.title }}
         </h2>
         <p class="text-gray-600 text-sm mb-2">
-          Instructor: <span class="font-medium">{{ course.instructor.username }}</span>
+          Instructor:
+          <span class="font-medium">{{ course.instructor.username }}</span>
         </p>
+        <p>Institution: {{ course.institution.name }}</p>
         <p class="text-gray-800 font-semibold text-lg mb-4">
           ${{ course.price }}
         </p>
@@ -42,12 +44,23 @@
             Manage Course
           </a>
           {% else %}
+          <!--           <a -->
+          {% if course.id in enrolled_courses %}
+          <a
+            href="{% url 'courses:course_detail' course.pk %}"
+            class="inline-block bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition-colors w-full text-center"
+          >
+            View Course
+          </a>
+          {% else %}
           <a
             href="{% url 'courses:course_enrollment' course.pk %}"
             class="inline-block bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-600 transition-colors w-full text-center"
           >
             Enroll Course
           </a>
+          {% endif %}
+          <!--           <a -->
           {% endif %}
           <hr class="my-2" />
           {% elif user.is_authenticated and user.is_learner %}
@@ -81,5 +94,10 @@
     </div>
     {% endfor %}
   </div>
+  {% else %}
+  <section>
+    <p class="text-gray-500 text-center">No courses found.</p>
+  </section>
+  {% endif %}
 </div>
 {% endblock %}

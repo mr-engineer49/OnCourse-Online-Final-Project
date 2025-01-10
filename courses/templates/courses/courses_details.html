@@ -76,6 +76,8 @@
       <!-- Add Lesson and Quiz Buttons -->
       <div class="mt-8 flex gap-4">
         {% if request.user.is_instructor %}
+        <hr />
+        {% if course.instructor == request.user %}
         <a
           href="{% url 'courses:add_lesson' course.pk %}"
           class="inline-block bg-blue-500 text-white px-6 py-3 rounded-lg hover:bg-blue-600 transition-colors"
@@ -89,6 +91,10 @@
           Add Quiz to Lesson
         </a>
         {% else %}
+        <p class="text-gray-500 text-sm">
+          Only the instructor can add lessons and quizzes.
+        </p>
+        {% endif %} {% else %}
         <p class="text-gray-500 text-sm">
           You must be an instructor to add lessons and quizzes.
         </p>

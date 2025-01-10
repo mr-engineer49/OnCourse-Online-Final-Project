@@ -2,6 +2,7 @@ from django.shortcuts import redirect, render, get_object_or_404
 from django.contrib.auth.decorators import login_required
 
 from courses.forms import LessonCreationForm
+from institutions.models import Institution
 from quizzes.forms import QuestionForm
 from quizzes.models import Question
 from .models import Course, Enrollment, Lesson
@@ -29,7 +30,8 @@ def course_list(request):
     if request.user.is_authenticated:
         enrolled_courses = set(Enrollment.objects.filter(user=request.user).values_list('course_id', flat=True))
 
-    context={'courses': courses, 'enrolled_courses': enrolled_courses}    
+    institutions = Institution.objects.all()
+    context={'courses': courses, 'enrolled_courses': enrolled_courses, 'institutions': institutions}    
     return render(request, 'courses/course_list.html', context)
 
 

@@ -22,6 +22,8 @@ class Lesson(models.Model):
     def __str__(self):
         return self.title
 
+
+
 class Enrollment(models.Model):
     user = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name='enrollments')
     course = models.ForeignKey(Course, on_delete=models.CASCADE, related_name='enrollments')

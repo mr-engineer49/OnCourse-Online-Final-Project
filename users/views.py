@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from django.shortcuts import render, redirect
 from django.contrib import auth
+from django.contrib import messages
 
 from courses.forms import CourseCreationForm
 from courses.models import Course
@@ -31,7 +32,9 @@ def create_course(request):
     if request.method == 'POST':
         form = CourseCreationForm(request.POST, request.FILES)
         if form.is_valid():
-            form.save()
+            post = form.save(commit=False)
+            post.instructor = request.user  # Set the instructor as the logged-in user
+            post.save()
             return redirect('courses:course_list')
     else:
         form = CourseCreationForm()
@@ -60,10 +63,11 @@ def login(request):
             auth.login(request, user)
             return redirect('courses:course_list')
         else:
-            return render(request, 'users/login.html', {'error': 'Invalid username or password'})
+            messages.error(request, 'Invalid username or password')
+            return render(request, 'users/login.html', {'error': 'Invalid username or password'}, status=401)
     else:
         login_form = UserLoginForm()
-        return render(request, 'users/login.html', {'login_form': login_form})
+        return render(request, 'users/login.html', {'login_form': login_form}, status=200)
     
 
 

@@ -1,0 +1,12 @@
+{% extends 'courses/base.html' %}
+<!-- The form.html template extends the base.html template. -->
+
+{% block content %}
+
+<h2>Create Webinar</h2>
+<form method="post">
+  {% csrf_token %} {{ webinar_form.as_p }}
+  <button type="submit">Create</button>
+</form>
+
+{% endblock content %}
