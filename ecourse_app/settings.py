@@ -62,6 +62,10 @@ ROOT_URLCONF = 'ecourse_app.urls'
 AUTH_USER_MODEL = 'users.CustomUser'
 
 
+SESSION_EXPIRE_AT_BROWSER_CLOSE = True
+SESSION_SAVE_EVERY_REQUEST = True
+
+
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',

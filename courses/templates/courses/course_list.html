@@ -25,12 +25,52 @@
           <span class="font-medium">{{ course.instructor.username }}</span>
         </p>
         <p class="text-gray-800 font-bold text-lg mb-4">${{ course.price }}</p>
-        <a
-          href="{% url 'courses:course_detail' course.id %}"
-          class="inline-block bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition-colors"
-        >
-          View Course
-        </a>
+        <div>
+          {% if user.is_authenticated and user.is_instructor %}
+          <hr />
+          {% if user == course.instructor %}
+          <a
+            href="{% url 'courses:course_detail' course.pk %}"
+            class="inline-block bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition-colors"
+          >
+            Manage Course
+          </a>
+          {% else %}
+          <a
+            href="{% url 'courses:course_enrollment' course.pk %}"
+            class="inline-block bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600 transition-colors"
+          >
+            Enroll Course
+          </a>
+          {% endif %}
+          <hr />
+          {% elif user.is_authenticated and user.is_learner %}
+          <hr />
+          {% if course.id in enrolled_courses %}
+          <a
+            href="{% url 'courses:course_detail' course.pk %}"
+            class="inline-block bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600 transition-colors"
+          >
+            Start Course
+          </a>
+          {% else %}
+          <a
+            href="{% url 'courses:course_enrollment' course.pk %}"
+            class="inline-block bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition-colors"
+          >
+            Enroll Now
+          </a>
+          {% endif %}
+          <hr />
+          {% else %}
+          <a
+            href="{% url 'users:login' %}"
+            class="inline-block bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition-colors"
+          >
+            Login to Enroll
+          </a>
+          {% endif %}
+        </div>
       </div>
     </div>
     {% endfor %}

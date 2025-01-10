@@ -4,23 +4,48 @@ from django.contrib.auth.decorators import login_required
 from courses.forms import LessonCreationForm
 from quizzes.forms import QuestionForm
 from quizzes.models import Question
-from .models import Course, Lesson
+from .models import Course, Enrollment, Lesson
 
 
 
 def home_page(request):
-    return render(request, 'courses/homepage.html')
+    featured_courses = Course.objects.filter(instructor=request.user)
+    return render(request, 'courses/homepage.html', {'featured_courses': featured_courses})
 
 
 def course_list(request):
+    """
+    This function retrieves all courses from the database and prepares a list of enrolled courses for the authenticated user.
+    It then renders the course list page with the retrieved data.
+
+    Parameters:
+    request (HttpRequest): The request object containing user information and other request details.
+
+    Returns:
+    HttpResponse: The rendered course list page with the context containing all courses and enrolled courses.
+    """
     courses = Course.objects.all()
-    return render(request, 'courses/course_list.html', {'courses': courses})
+    enrolled_courses = set()
+
+    if request.user.is_authenticated:
+        enrolled_courses = set(Enrollment.objects.filter(user=request.user).values_list('course_id', flat=True))
+
+    context={'courses': courses, 'enrolled_courses': enrolled_courses}    
+    return render(request, 'courses/course_list.html', context)
+
 
 def course_detail(request, pk):
     course = get_object_or_404(Course, pk=pk)
+    enrolled = False
+    if request.user.is_authenticated:
+        enrolled = Enrollment.objects.filter(user=request.user, course=course).exists()
+    context = {
+        'course': course,
+        'enrolled': enrolled,
+    }    
     quizz_form = Question.objects.all()
     print(quizz_form)
-    return render(request, 'courses/courses_details.html', {'course': course, 'quizz_form': quizz_form})
+    return render(request, 'courses/courses_details.html', context)
 
 
 def add_lesson(request, course_pk):
@@ -59,3 +84,14 @@ def quizz_creation(request):
     return render(request, 'courses/quizz_creation.html', {'quizz_form': quizz_form})
 
 
+
+
+def course_enrollment(request, course_pk):
+    course = get_object_or_404(Course, pk=course_pk)
+    if not Enrollment.objects.filter(user=request.user, course=course).exists():
+        Enrollment.objects.create(user=request.user, course=course)
+        print("Enrolled in course:", course.title)
+        return redirect('courses:course_detail', course.pk)  # Redirect to course detail page after enrollment
+    else:
+        print("Already enrolled in course:", course.title)
+        return redirect('courses:course_list')  # Redirect to course list page if already enrolled

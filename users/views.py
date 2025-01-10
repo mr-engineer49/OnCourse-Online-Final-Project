@@ -15,11 +15,13 @@ def user_profile(request):
     is_institution = request.user.is_institution
     is_learner = request.user.is_learner
     courses = Course.objects.filter(instructor=request.user)
+    enrolled_courses = request.user.enrollments.all()
     context = {
         'is_instructor': is_instructor,
         'is_institution': is_institution,
         'is_learner': is_learner,
         'courses': courses,
+        'enrolled_courses': enrolled_courses,
     }
     return render(request, 'users/user_profile.html', context)
 
@@ -42,7 +44,7 @@ def register(request):
         form = UserRegistrationForm(request.POST)
         if form.is_valid():
             form.save()
-            return redirect('/')
+            return redirect('users:login')
     else:
         form = UserRegistrationForm()
     return render(request, 'users/register.html', {'form': form})
@@ -56,7 +58,7 @@ def login(request):
         user = auth.authenticate(username=username, password=password)
         if user is not None:
             auth.login(request, user)
-            return redirect('/')
+            return redirect('courses:course_list')
         else:
             return render(request, 'users/login.html', {'error': 'Invalid username or password'})
     else:

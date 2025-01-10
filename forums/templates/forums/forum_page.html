@@ -3,6 +3,15 @@
 
 {% block content %}
 <div class="container mx-auto px-4 py-6">
+  <div>
+    {% if user.is_instructor %}
+    <a href="{% url 'forums:thread_create' %}"> Create Thread </a>
+    {% elif user.is_learner %}
+    <a href="{% url 'forums:forum_create' %}">Post a Forum</a>
+    {% else %}
+    <p>You must be a learner or instructor post. You are only a watcher</p>
+    {% endif %}
+  </div>
   <!-- Forums Section -->
   <section class="mb-8">
     <h1 class="text-2xl font-bold mb-4">Forums</h1>
