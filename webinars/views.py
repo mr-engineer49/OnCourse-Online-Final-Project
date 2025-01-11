@@ -1,11 +1,11 @@
 from django.shortcuts import redirect, render, get_object_or_404
 
 from webinars.forms import WebinarCreationForm
-from .models import Webinar
+from .models import Webinar, WebinarAttendance
 
 def webinar_list(request):
     webinars = Webinar.objects.all()
-    return render(request, 'webinars/webinar_list.html', {'webinars': webinars})
+    return render(request, 'webinar_list.html', {'webinars': webinars})
 
 def webinar_detail(request, pk):
     webinar = get_object_or_404(Webinar, pk=pk)
@@ -20,7 +20,20 @@ def create_webinary(request):
             post = webinar_form.save(commit=False)
             post.instructor = request.user
             post.save()
-            return redirect('webinars:webinar_list')
+            return redirect('users:user_profile')
     else:
         webinar_form = WebinarCreationForm()
     return render(request, 'create_webinars.html', {'webinar_form': webinar_form})
+
+
+
+def webinar_attend(request, pk):
+    webinar = get_object_or_404(Webinar, pk=pk)
+    if not WebinarAttendance.objects.filter(user=request.user, webinar=webinar).exists():
+        WebinarAttendance.objects.create(user=request.user, webinar=webinar)
+        print("Enrolled in webinar :", webinar.title)
+        return redirect('users:user_profile', webinar.pk)  # Redirect to course detail page after enrollment
+    else:
+        print("Already enrolled in course:", webinar.title)
+        return redirect('users:user_profile') 
+

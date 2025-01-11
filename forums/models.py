@@ -3,7 +3,7 @@ from courses.models import Course
 from users.models import CustomUser
 
 class Forum(models.Model):
-    course = models.OneToOneField(Course, on_delete=models.CASCADE, related_name='forum')
+    course = models.ForeignKey(Course, on_delete=models.CASCADE, related_name='forum')
     name = models.CharField(max_length=200)
 
     def __str__(self):

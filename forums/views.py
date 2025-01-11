@@ -6,7 +6,7 @@ from .models import Forum, Thread, Post
 
 
 def forum_list(request):
-    forums = Forum.objects.all()
+    forums = Forum.objects.select_related('course').order_by('course__title')
     threads = Thread.objects.all()
     # Check if the user is authenticated first
     if request.user.is_authenticated:

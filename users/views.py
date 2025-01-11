@@ -1,11 +1,11 @@
-from django.shortcuts import render
+from django.shortcuts import  render
 from django.shortcuts import render, redirect
 from django.contrib import auth
 from django.contrib import messages
-
 from courses.forms import CourseCreationForm
 from courses.models import Course
-from .forms import UserLoginForm, UserRegistrationForm
+from webinars.models import Webinar
+from .forms import UserLoginForm, UserRegistrationForm, UserUpdateForm
 from django.contrib.auth.decorators import login_required
 # Create your views here.
 
@@ -17,12 +17,14 @@ def user_profile(request):
     is_learner = request.user.is_learner
     courses = Course.objects.filter(instructor=request.user)
     enrolled_courses = request.user.enrollments.all()
+    webinars = Webinar.objects.filter(owner=request.user)
     context = {
         'is_instructor': is_instructor,
         'is_institution': is_institution,
         'is_learner': is_learner,
         'courses': courses,
         'enrolled_courses': enrolled_courses,
+        'webinars': webinars,
     }
     return render(request, 'users/user_profile.html', context)
 
@@ -53,6 +55,16 @@ def register(request):
     return render(request, 'users/register.html', {'form': form})
 
 
+def user_update(request):
+    if request.method == 'POST':
+        user_update_form = UserUpdateForm(request.POST, instance=request.user)
+        if user_update_form.is_valid():
+            user_update_form.save()
+            return redirect('users:user_profile')
+    else:
+        user_update_form = UserUpdateForm(instance=request.user)
+    return render(request, 'users/user_update_form.html', {'user_update_form': user_update_form})
+
 
 def login(request):
     if request.method == 'POST':
@@ -69,7 +81,6 @@ def login(request):
         login_form = UserLoginForm()
         return render(request, 'users/login.html', {'login_form': login_form}, status=200)
     
-
 
 def logout(request):
     # Log out the user and redirect to the home page

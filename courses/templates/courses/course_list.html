@@ -9,29 +9,23 @@
     <div
       class="bg-white rounded-lg shadow-lg hover:shadow-xl overflow-hidden transition-shadow duration-300 group"
     >
-      <!-- Course Image -->
-      <div class="relative h-48 bg-gray-200">
-        <img
-          src="{{ course.image.url|default:'/static/images/course-placeholder.jpg' }}"
-          alt="{{ course.title }}"
-          class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-        />
-      </div>
       <!-- Course Details -->
       <div class="p-6">
         <h2
-          class="text-xl font-bold text-gray-800 mb-2 truncate group-hover:text-primary transition-colors"
+          class="text-lg font-bold text-gray-800 truncate group-hover:text-primary transition-colors"
         >
           {{ course.title }}
         </h2>
-        <p class="text-gray-600 text-sm mb-2">
+        <br />
+        <p class="text-gray-600 text-sm">
           Instructor:
           <span class="font-medium">{{ course.instructor.username }}</span>
         </p>
-        <p>Institution: {{ course.institution.name }}</p>
-        <p class="text-gray-800 font-semibold text-lg mb-4">
-          ${{ course.price }}
-        </p>
+        {% if available in institutions %}
+        <p>Institution: {{ available.name }}</p>
+        {% endif %}
+        <br />
+        <p class="text-gray-800 font-semibold text-lg">${{ course.price }}</p>
         <!-- Call to Action Buttons -->
         <div class="space-y-2">
           {% if user.is_authenticated and user.is_instructor %}
@@ -86,7 +80,7 @@
             href="{% url 'users:login' %}"
             class="inline-block bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition-colors w-full text-center"
           >
-            Login to Enroll
+            Login as Learner to Enroll
           </a>
           {% endif %}
         </div>

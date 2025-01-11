@@ -1,6 +1,6 @@
 from django.shortcuts import get_object_or_404, redirect, render
 from .models import Institution
-from .forms import CreateInstitutionForm
+from .forms import CreateInstitutionForm, UpdateInstitutionForm
 
 
 

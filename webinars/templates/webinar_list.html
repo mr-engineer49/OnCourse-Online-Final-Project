@@ -1,0 +1,10 @@
+{% extends 'courses/base.html' %}
+<!-- The form.html template extends the base.html template. -->
+
+{% block content %}
+<h2>Webinars</h2>
+{% for webinar in webinars %}
+<p>
+  <a href="#">{{ webinar.title }}</a>
+</p>
+{% endfor %} {% endblock content %}

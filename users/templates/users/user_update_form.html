@@ -1,0 +1,24 @@
+{% extends 'courses/base.html' %}
+<!-- The user_update_form.html template extends the base.html template. -->
+{% block content %}
+<div class="container mx-auto mt-8">
+  <h1 class="text-2xl font-bold mb-4 text-center">Update User</h1>
+  <form
+    method="post"
+    class="max-w-lg mx-auto bg-white shadow-md rounded px-8 py-6"
+  >
+    {% csrf_token %}
+    <!-- Render user_update_form fields -->
+    <div class="mb-4">{{ user_update_form.as_p }}</div>
+    <!-- Render user_profile fields -->
+    <div class="mb-4">{{ user_profile.as_p }}</div>
+    <!-- Submit Button -->
+    <button
+      type="submit"
+      class="w-full bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+    >
+      Update
+    </button>
+  </form>
+</div>
+{% endblock content %}

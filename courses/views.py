@@ -2,7 +2,7 @@ from django.shortcuts import redirect, render, get_object_or_404
 from django.contrib.auth.decorators import login_required
 
 from courses.forms import LessonCreationForm
-from institutions.models import Institution
+from institutions.models import AvailableInstitution, Institution
 from quizzes.forms import QuestionForm
 from quizzes.models import Question
 from .models import Course, Enrollment, Lesson
@@ -10,7 +10,17 @@ from .models import Course, Enrollment, Lesson
 
 
 def home_page(request):
-    return render(request, 'courses/homepage.html')
+    courses = Course.objects.all()[0:3]
+    enrolled_courses = set()
+    if request.user.is_authenticated:
+        enrolled_courses = set(Enrollment.objects.filter(user=request.user).values_list('course_id', flat=True))
+
+    institutions = Institution.objects.all()
+
+    
+    
+    context={'courses': courses, 'enrolled_courses': enrolled_courses, 'institutions': institutions}
+    return render(request, 'courses/homepage.html', context)
 
 
 def course_list(request):
@@ -30,7 +40,7 @@ def course_list(request):
     if request.user.is_authenticated:
         enrolled_courses = set(Enrollment.objects.filter(user=request.user).values_list('course_id', flat=True))
 
-    institutions = Institution.objects.all()
+    institutions = AvailableInstitution.objects.all()
     context={'courses': courses, 'enrolled_courses': enrolled_courses, 'institutions': institutions}    
     return render(request, 'courses/course_list.html', context)
 
