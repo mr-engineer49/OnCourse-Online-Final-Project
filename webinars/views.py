@@ -8,7 +8,7 @@ def webinar_list(request):
     attended_webinars = set()
     if request.user.is_authenticated:
         attended_webinars = set(WebinarAttendance.objects.filter(user=request.user).values_list('webinar_id', flat=True))
-
+    
     return render(request, 'webinar_list.html', {'webinars': webinars, 'attended_webinars': attended_webinars})
 
 def webinar_detail(request, webinar_pk):
