@@ -5,11 +5,16 @@ from .models import Webinar, WebinarAttendance
 
 def webinar_list(request):
     webinars = Webinar.objects.all()
-    return render(request, 'webinar_list.html', {'webinars': webinars})
+    attended_webinars = set()
+    if request.user.is_authenticated:
+        attended_webinars = set(WebinarAttendance.objects.filter(user=request.user).values_list('webinar_id', flat=True))
 
-def webinar_detail(request, pk):
-    webinar = get_object_or_404(Webinar, pk=pk)
-    return render(request, 'webinars/webinar_detail.html', {'webinar': webinar})
+    return render(request, 'webinar_list.html', {'webinars': webinars, 'attended_webinars': attended_webinars})
+
+def webinar_detail(request, webinar_pk):
+    webinar_detail = get_object_or_404(Webinar, pk=webinar_pk)
+    attendes = WebinarAttendance.objects.filter(webinar=webinar_detail).values().count()
+    return render(request, 'webinar_details.html', {'webinar_detail': webinar_detail, 'attendes': attendes})
 
 
 def create_webinary(request):
@@ -27,12 +32,12 @@ def create_webinary(request):
 
 
 
-def webinar_attend(request, pk):
-    webinar = get_object_or_404(Webinar, pk=pk)
+def webinar_attend(request, webinar_pk):
+    webinar = get_object_or_404(Webinar, pk=webinar_pk)
     if not WebinarAttendance.objects.filter(user=request.user, webinar=webinar).exists():
         WebinarAttendance.objects.create(user=request.user, webinar=webinar)
         print("Enrolled in webinar :", webinar.title)
-        return redirect('users:user_profile', webinar.pk)  # Redirect to course detail page after enrollment
+        return redirect('users:user_profile')  # Redirect to course detail page after enrollment
     else:
         print("Already enrolled in course:", webinar.title)
         return redirect('users:user_profile') 

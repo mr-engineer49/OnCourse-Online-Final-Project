@@ -9,7 +9,12 @@ class WebinarCreationForm(forms.ModelForm):
         verbose_name_plural = 'ModelNamePlural'
         app_label = 'webinars'
         model = Webinar
-        fields = '__all__'
+        fields = [ 'course', 'title', 'description', 'start_time', 'end_time' ]
+
+        widgets = {
+            'start_time': forms.DateTimeInput(attrs={'type': 'datetime-local'}),
+            'end_time': forms.DateTimeInput(attrs={'type': 'datetime-local'}),
+        }
 
 
 

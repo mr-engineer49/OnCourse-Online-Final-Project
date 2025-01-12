@@ -1,0 +1,47 @@
+{% extends 'courses/base.html' %}
+<!-- The form.html template extends the base.html template. -->
+{% block content %}
+<section class="container mx-auto px-4 py-6">
+  <div class="bg-white shadow-lg rounded-lg p-8 border border-gray-200">
+    <h2
+      class="text-3xl font-bold text-gray-800 mb-6 border-b border-gray-300 pb-2"
+    >
+      Webinar Details
+    </h2>
+    <div class="grid grid-cols-1 gap-6 md:grid-cols-2">
+      <div>
+        <p class="text-lg mb-4">
+          <span class="font-semibold text-gray-600">Title:</span>
+          <span class="text-gray-800">{{ webinar_detail.title }}</span>
+        </p>
+        <p class="text-lg mb-4">
+          <span class="font-semibold text-gray-600">Start Time:</span>
+          <span class="text-gray-800">{{ webinar_detail.start_time }}</span>
+        </p>
+        <p class="text-lg mb-4">
+          <span class="font-semibold text-gray-600">End Time:</span>
+          <span class="text-gray-800">{{ webinar_detail.end_time }}</span>
+        </p>
+      </div>
+      <div>
+        <p class="text-lg mb-4">
+          <span class="font-semibold text-gray-600">Description:</span>
+          <span class="text-gray-800">{{ webinar_detail.description }}</span>
+        </p>
+        <p class="text-lg mb-4">
+          <span class="font-semibold text-gray-600">Attendees:</span>
+          <span class="text-gray-800">{{ attendes }}</span>
+        </p>
+      </div>
+    </div>
+    <div class="mt-6">
+      <a
+        href="#"
+        class="inline-block bg-gray-500 text-white px-6 py-2 rounded-lg text-sm font-medium hover:bg-gray-600 transition duration-200 ml-4"
+      >
+        Edit Details
+      </a>
+    </div>
+  </div>
+</section>
+{% endblock content %}

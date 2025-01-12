@@ -2,9 +2,57 @@
 <!-- The form.html template extends the base.html template. -->
 
 {% block content %}
-<h2>Webinars</h2>
-{% for webinar in webinars %}
-<p>
-  <a href="#">{{ webinar.title }}</a>
-</p>
-{% endfor %} {% endblock content %}
+<div class="container mx-auto px-4 py-6">
+  <h2 class="text-2xl font-bold text-gray-800 mb-6">Upcoming Webinars</h2>
+  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+    {% for webinar in webinars %}
+    <div
+      class="webinar bg-white shadow-lg rounded-lg border border-gray-200 p-6 flex flex-col justify-between"
+    >
+      <div>
+        <h3 class="text-xl font-semibold text-gray-800 mb-2">
+          {{ webinar.title }}
+        </h3>
+        <p class="text-sm text-gray-500 mb-4">
+          Starts at: {{ webinar.start_time }}
+        </p>
+        <p class="text-gray-600 mb-6">
+          {{ webinar.description|truncatechars:100 }}
+        </p>
+      </div>
+      <div class="mt-4">
+        {% if user.is_authenticated and user.is_learner %}
+        <hr />
+        {% if webinar.id in attended_webinars %}
+        <a>
+          <span
+            class="block text-center bg-green-500 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-green-600 transition duration-200"
+          >
+            Attended
+          </span>
+        </a>
+        {% else %}
+        <a
+          href="{% url 'webinars:webinar_attend' webinar.pk %}"
+          class="block text-center bg-blue-500 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-blue-600 transition duration-200"
+        >
+          Attend
+        </a>
+        {% endif %}
+        <hr />
+        {% elif user.is_authenticated and user.is_instructor %}
+        <span></span>
+        {% elif user.is_authenticated and user.is_institution %}
+        <a
+          href="{% url 'webinars:webinar_detail' webinar.pk %}"
+          class="block text-center bg-green-500 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-green-600 transition duration-200"
+        >
+          View Details
+        </a>
+        {% endif %}
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+</div>
+{% endblock content %}

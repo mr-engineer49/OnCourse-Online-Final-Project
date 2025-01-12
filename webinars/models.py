@@ -9,7 +9,6 @@ class Webinar(models.Model):
     description = models.TextField()
     start_time = models.DateTimeField()
     end_time = models.DateTimeField()
-    participants = models.ManyToManyField(CustomUser, related_name='webinars_joined', blank=True)
 
     def __str__(self):
         return self.title
@@ -17,7 +16,6 @@ class Webinar(models.Model):
 
 class WebinarAttendance(models.Model):
     webinar = models.ForeignKey(Webinar, on_delete=models.CASCADE, related_name='attendances')
-
-
+    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name='webinar_attendances', default=None, null=True)
     def __str__(self):
         return self.webinar.title or 'Unnamed Webinar Attendance'
