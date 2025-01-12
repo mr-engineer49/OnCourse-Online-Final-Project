@@ -15,7 +15,8 @@ class CustomUser(AbstractUser):
     )
     is_instructor = models.BooleanField(default=False)
     is_institution = models.BooleanField(default=False)
-    is_learner = models.BooleanField(default=True)
+    is_learner = models.BooleanField(default=False)
+    is_learn_instructor = models.BooleanField(default=True)
 
     groups = models.ManyToManyField(
         Group,
