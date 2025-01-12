@@ -1,168 +1,168 @@
-{% extends 'courses/base.html' %}
-<!-- The homepage template extends the base template. -->
-{% block content %}
-<!-- Main Content -->
-<main class="container mx-auto px-4 py-8">
-  <h1 class="text-3xl font-bold mb-4 text-primary">Welcome to MyApp</h1>
-  <p class="text-lg text-gray-600 mb-6">
-    Explore our courses, participate in forums, and more.
-  </p>
-  <div class="grid md:grid-cols-3 gap-6">
-    <div class="bg-white shadow rounded-lg p-4">
-      <h2 class="text-xl font-semibold mb-2">Courses</h2>
-      <p class="text-gray-600">
-        Browse through our extensive collection of courses.
-      </p>
-      <a
-        href="{% url 'courses:course_list' %}"
-        class="mt-4 inline-block text-primary font-medium hover:underline"
-      >
-        Explore Courses
-      </a>
-    </div>
-    <div class="bg-white shadow rounded-lg p-4">
-      <h2 class="text-xl font-semibold mb-2">Forums</h2>
-      <p class="text-gray-600">
-        Engage in discussions and connect with others.
-      </p>
-      <a
-        href="{% url 'forums:forum_list' %}"
-        class="mt-4 inline-block text-primary font-medium hover:underline"
-      >
-        Join Forums
-      </a>
-    </div>
-    <div class="bg-white shadow rounded-lg p-4">
-      <h2 class="text-xl font-semibold mb-2">Get Started</h2>
-      <p class="text-gray-600">Register now to unlock more features.</p>
-      <a
-        href="{% url 'users:register' %}"
-        class="mt-4 inline-block text-primary font-medium hover:underline"
-      >
-        Register Now
-      </a>
-    </div>
-  </div>
-</main>
-<!-- Courses Section -->
-<div class="container mx-auto px-4 py-8">
-  <h1 class="text-4xl font-extrabold text-primary mb-10 text-center">
-    Explore Courses
-  </h1>
-  {% if courses %}
-  <div class="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
-    {% for course in courses %}
-    <div
-      class="bg-white rounded-lg shadow-lg hover:shadow-xl overflow-hidden transition-shadow duration-300 group"
+{% extends 'courses/base.html' %} {% block content %}
+<main class="container mx-auto px-6 py-12 space-y-16">
+  <!-- Hero Section -->
+  <section
+    class="bg-gradient-to-r from-blue-500 to-indigo-600 text-white rounded-lg shadow-lg p-10 text-center"
+  >
+    <h1 class="text-5xl font-extrabold mb-4">Welcome to MyApp</h1>
+    <p class="text-xl font-light mb-6">
+      Learn, connect, and grow with our wide array of courses and resources.
+    </p>
+    <a
+      href="{% url 'users:register' %}"
+      class="bg-white text-blue-600 px-6 py-3 rounded-full font-semibold shadow-md hover:bg-gray-100 transition duration-300"
     >
-      <!-- Course Details -->
-      <div class="p-6">
-        <h2
-          class="text-lg font-bold text-gray-800 truncate group-hover:text-primary transition-colors"
-        >
-          {{ course.title }}
-        </h2>
-        <br />
-        <p class="text-gray-600 text-sm">
-          Instructor:
-          <span class="font-medium">{{ course.instructor.username }}</span>
-        </p>
-        {% if available in institutions %}
-        <p>Institution: {{ available.name }}</p>
-        {% endif %}
-        <br />
-        <p class="text-gray-800 font-semibold text-lg">${{ course.price }}</p>
-        <!-- Call to Action Buttons -->
-        <div class="space-y-2">
-          {% if user.is_authenticated and user.is_instructor %}
-          <hr class="my-2" />
-          {% if user == course.instructor %}
-          <a
-            href="{% url 'courses:course_detail' course.pk %}"
-            class="inline-block bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition-colors w-full text-center"
-          >
-            Manage Course
-          </a>
-          {% else %}
-          <!--           <a -->
-          {% if course.id in enrolled_courses %}
-          <a
-            href="{% url 'courses:course_detail' course.pk %}"
-            class="inline-block bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition-colors w-full text-center"
-          >
-            View Course
-          </a>
-          {% else %}
-          <a
-            href="{% url 'courses:course_enrollment' course.pk %}"
-            class="inline-block bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-600 transition-colors w-full text-center"
-          >
-            Enroll Course
-          </a>
-          {% endif %}
-          <!--           <a -->
-          {% endif %}
-          <hr class="my-2" />
-          {% elif user.is_authenticated and user.is_learner %}
-          <hr class="my-2" />
-          {% if course.id in enrolled_courses %}
-          <a
-            href="{% url 'courses:course_detail' course.pk %}"
-            class="inline-block bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-600 transition-colors w-full text-center"
-          >
-            Start Course
-          </a>
-          {% else %}
-          <a
-            href="{% url 'courses:course_enrollment' course.pk %}"
-            class="inline-block bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition-colors w-full text-center"
-          >
-            Enroll Now
-          </a>
-          {% endif %}
-          <hr class="my-2" />
-          {% else %}
-          <a
-            href="{% url 'users:login' %}"
-            class="inline-block bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition-colors w-full text-center"
-          >
-            Login as Learner to Enroll
-          </a>
-          {% endif %}
+      Get Started
+    </a>
+  </section>
+
+  <!-- Feature Cards Section -->
+  <section class="text-center space-y-12">
+    <h2 class="text-4xl font-extrabold text-gray-800">What We Offer</h2>
+    <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-8">
+      <div
+        class="bg-white rounded-lg shadow-md p-8 hover:shadow-lg transition-shadow duration-300"
+      >
+        <div class="text-blue-500 text-4xl mb-4">
+          <i class="fas fa-book-open"></i>
         </div>
+        <h3 class="text-2xl font-bold text-gray-800 mb-2">Courses</h3>
+        <p class="text-gray-600 mb-4">
+          Dive into a variety of topics and master new skills.
+        </p>
+        <a
+          href="{% url 'courses:course_list' %}"
+          class="text-blue-600 font-medium hover:underline"
+        >
+          Explore Courses →
+        </a>
+      </div>
+      <div
+        class="bg-white rounded-lg shadow-md p-8 hover:shadow-lg transition-shadow duration-300"
+      >
+        <div class="text-green-500 text-4xl mb-4">
+          <i class="fas fa-comments"></i>
+        </div>
+        <h3 class="text-2xl font-bold text-gray-800 mb-2">Forums</h3>
+        <p class="text-gray-600 mb-4">
+          Engage in discussions and network with like-minded people.
+        </p>
+        <a
+          href="{% url 'forums:forum_list' %}"
+          class="text-green-600 font-medium hover:underline"
+        >
+          Join Forums →
+        </a>
+      </div>
+      <div
+        class="bg-white rounded-lg shadow-md p-8 hover:shadow-lg transition-shadow duration-300"
+      >
+        <div class="text-yellow-500 text-4xl mb-4">
+          <i class="fas fa-user-plus"></i>
+        </div>
+        <h3 class="text-2xl font-bold text-gray-800 mb-2">Get Started</h3>
+        <p class="text-gray-600 mb-4">Sign up to unlock premium features.</p>
+        <a
+          href="{% url 'users:register' %}"
+          class="text-yellow-600 font-medium hover:underline"
+        >
+          Register Now →
+        </a>
       </div>
     </div>
-    {% endfor %}
-  </div>
-  {% else %}
-  <section>
-    <p class="text-gray-500 text-center">No courses found.</p>
   </section>
-  {% endif %}
-  <hr />
-  <br />
-  <hr />
-  <!-- Pagination -->
-  <div class="flex justify-center">
-    <a
-      class="text-primary hover:underline"
-      href="{% url 'courses:course_list' %}"
-      >View More</a
-    >
-  </div>
-</div>
-<br />
-<!-- Institutions Section -->
-<div class="container mx-auto px-4 py-8">
-  <h2 class="text-3xl font-bold text-gray-900 text-center py-4">Institutions</h2>
-  <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-    {% for available_institution in institutions %}
-    <div class="bg-white rounded-lg shadow-md overflow-hidden text-center p-2">
-      <span class="text-lg font-semibold text-center justify-center">{{ available_institution.name }}</span>
+
+  <!-- Courses Section -->
+  <section class="space-y-8">
+    <h2 class="text-4xl font-extrabold text-gray-800 text-center">
+      Top Courses
+    </h2>
+    {% if courses %}
+    <div class="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
+      {% for course in courses %}
+      <div
+        class="bg-white rounded-lg shadow-lg overflow-hidden hover:shadow-2xl transition-shadow duration-300"
+      >
+        <img
+          src="{{ course.image_url }}"
+          alt="{{ course.title }}"
+          class="w-full h-48 object-cover"
+        />
+        <div class="p-6">
+          <h3 class="text-xl font-bold text-gray-800 truncate mb-2">
+            {{ course.title }}
+          </h3>
+          <p class="text-gray-600 mb-4">
+            Instructor:
+            <span class="font-medium">{{ course.instructor.username }}</span>
+          </p>
+          <p class="text-lg font-semibold text-gray-800 mb-4">
+            ${{ course.price }}
+          </p>
+          <a
+            href="{% url 'courses:course_detail' course.pk %}"
+            class="block bg-blue-600 text-white text-center px-4 py-2 rounded-md hover:bg-blue-700 transition duration-300"
+          >
+            View Details
+          </a>
+        </div>
+      </div>
+      {% endfor %}
     </div>
-    {% endfor %}
-    <!-- Users -->
-  </div>
-</div>
-  {% endblock content %}
-</div>
+    {% else %}
+    <p class="text-gray-500 text-center">No courses available at the moment.</p>
+    {% endif %}
+    <div class="text-center">
+      <a
+        href="{% url 'courses:course_list' %}"
+        class="text-blue-600 font-medium hover:underline"
+      >
+        View All Courses →
+      </a>
+    </div>
+  </section>
+
+  <!-- Institutions Section -->
+  <section class="space-y-8">
+    <h2 class="text-3xl font-bold text-gray-800 text-center">
+      Our Institutions
+    </h2>
+    <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
+      {% for institution in institutions %}
+      <div class="bg-white rounded-lg shadow-md p-6 text-center">
+        <h3 class="text-lg font-bold text-gray-800 mb-2">
+          {{ institution.name }}
+        </h3>
+      </div>
+      {% endfor %}
+    </div>
+  </section>
+
+  <!-- Webinars Section -->
+  <section class="space-y-8">
+    <h2 class="text-3xl font-bold text-gray-800 text-center">
+      Upcoming Webinars
+    </h2>
+    {% if webinars %}
+    <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+      {% for webinar in webinars %}
+      <div class="bg-white rounded-lg shadow-md p-6">
+        <h3 class="text-lg font-bold text-gray-800">{{ webinar.title }}</h3>
+        <p class="text-gray-600 mb-4">
+          Starting on: {{ webinar.start_time|date:"d M Y" }}
+        </p>
+        <a
+          href="{% url 'webinars:webinar_attend' webinar.pk %}"
+          class="text-blue-600 font-medium hover:underline"
+        >
+          Attend Webinar →
+        </a>
+      </div>
+      {% endfor %}
+    </div>
+    {% else %}
+    <p class="text-gray-500 text-center">No upcoming webinars available.</p>
+    {% endif %}
+  </section>
+</main>
+{% endblock %}

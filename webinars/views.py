@@ -1,4 +1,5 @@
 from django.shortcuts import redirect, render, get_object_or_404
+from django.contrib.auth.decorators import login_required
 
 from webinars.forms import WebinarCreationForm
 from .models import Webinar, WebinarAttendance
@@ -31,7 +32,6 @@ def create_webinary(request):
     return render(request, 'create_webinars.html', {'webinar_form': webinar_form})
 
 
-
 def webinar_attend(request, webinar_pk):
     webinar = get_object_or_404(Webinar, pk=webinar_pk)
     if not WebinarAttendance.objects.filter(user=request.user, webinar=webinar).exists():
@@ -41,4 +41,4 @@ def webinar_attend(request, webinar_pk):
     else:
         print("Already enrolled in course:", webinar.title)
         return redirect('users:user_profile') 
-
+        

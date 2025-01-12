@@ -1,19 +1,19 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>MyApp</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Tailwind Configuration -->
     <script>
       tailwind.config = {
         theme: {
           extend: {
             colors: {
-              primary: "#4F46E5", // Indigo for primary buttons
-              secondary: "#6B7280", // Cool gray for text
-              background: "#F9FAFB", // Light gray for background
+              primary: "#1D4ED8", // Strong blue for primary actions
+              secondary: "#4B5563", // Neutral gray for text
+              accent: "#9333EA", // Purple for highlights
+              background: "#F3F4F6", // Soft gray for backgrounds
             },
           },
         },
@@ -21,48 +21,35 @@
     </script>
   </head>
   <!-- Header -->
-  <header class="bg-primary text-white">
-    <nav class="container mx-auto px-4 py-4 flex justify-between items-center">
-      <!-- Logo -->
-      <div class="text-2xl font-bold">
-        <a href="/" class="hover:text-gray-200">MyApp</a>
-      </div>
-      <!-- Desktop Menu -->
+  <header class="bg-primary text-white sticky top-0 z-50">
+    <nav class="container mx-auto flex items-center justify-between p-4">
+      <a href="/" class="text-2xl font-bold">MyApp</a>
       <div class="hidden md:flex space-x-6">
-        <a href="{% url 'courses:course_list' %}" class="hover:text-gray-300">
-          Courses
-        </a>
-        <a href="{% url 'webinars:webinar_list' %}" class="hover:text-gray-300"
+        <a href="{% url 'courses:course_list' %}" class="hover:underline"
+          >Courses</a
+        >
+        <a href="{% url 'webinars:webinar_list' %}" class="hover:underline"
           >Webinars</a
         >
-        <a href="{% url 'forums:forum_list' %}" class="hover:text-gray-300">
-          Forums
-        </a>
+        <a href="{% url 'forums:forum_list' %}" class="hover:underline"
+          >Forums</a
+        >
         {% if user.is_authenticated %}
-        <a href="{% url 'users:user_profile' %}" class="hover:text-gray-300">
-          Profile
-        </a>
-        <a href="{% url 'users:logout' %}" class="hover:text-gray-300">
-          Logout
-        </a>
+        <a href="{% url 'users:user_profile' %}" class="hover:underline"
+          >Profile</a
+        >
+        <a href="{% url 'users:logout' %}" class="hover:underline">Logout</a>
         {% else %}
-        <a href="{% url 'users:login' %}" class="hover:text-gray-300">
-          Login
-        </a>
-        <a href="{% url 'users:register' %}" class="hover:text-gray-300">
-          Register
-        </a>
+        <a href="{% url 'users:login' %}" class="hover:underline">Login</a>
+        <a href="{% url 'users:register' %}" class="hover:underline"
+          >Register</a
+        >
         {% endif %}
       </div>
-      <!-- Mobile Menu Button -->
-      <button
-        id="mobile-menu-button"
-        class="md:hidden focus:outline-none"
-        aria-label="Open Menu"
-      >
+      <button id="mobile-menu-btn" class="md:hidden">
         <svg
-          class="w-6 h-6 text-white"
           xmlns="http://www.w3.org/2000/svg"
+          class="w-6 h-6"
           fill="none"
           viewBox="0 0 24 24"
           stroke="currentColor"
@@ -76,6 +63,24 @@
         </svg>
       </button>
     </nav>
+    <div id="mobile-menu" class="hidden md:hidden bg-primary text-white">
+      <a href="{% url 'courses:course_list' %}" class="block px-4 py-2"
+        >Courses</a
+      >
+      <a href="{% url 'webinars:webinar_list' %}" class="block px-4 py-2"
+        >Webinars</a
+      >
+      <a href="{% url 'forums:forum_list' %}" class="block px-4 py-2">Forums</a>
+      {% if user.is_authenticated %}
+      <a href="{% url 'users:user_profile' %}" class="block px-4 py-2"
+        >Profile</a
+      >
+      <a href="{% url 'users:logout' %}" class="block px-4 py-2">Logout</a>
+      {% else %}
+      <a href="{% url 'users:login' %}" class="block px-4 py-2">Login</a>
+      <a href="{% url 'users:register' %}" class="block px-4 py-2">Register</a>
+      {% endif %}
+    </div>
   </header>
 
   <!-- Mobile Menu -->

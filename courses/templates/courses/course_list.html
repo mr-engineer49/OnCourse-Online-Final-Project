@@ -1,75 +1,92 @@
 {% extends 'courses/base.html' %} {% block content %}
-<div class="container mx-auto px-4 py-8">
-  <h1 class="text-4xl font-extrabold text-primary mb-10 text-center">
-    Explore Our Courses
+<div class="container mx-auto px-6 py-12">
+  <!-- Header Section -->
+  <h1
+    class="text-4xl font-bold text-gray-800 text-center mb-8 tracking-tight leading-tight"
+  >
+    Discover Top-Quality Courses
   </h1>
+  <p class="text-gray-600 text-center mb-12 text-lg">
+    Enhance your skills with expert-led courses tailored to your needs.
+  </p>
+
+  <!-- Courses Grid -->
   {% if courses %}
   <div class="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
     {% for course in courses %}
     <div
-      class="bg-white rounded-lg shadow-lg hover:shadow-xl overflow-hidden transition-shadow duration-300 group"
+      class="bg-white border border-gray-200 rounded-lg shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2"
     >
-      <!-- Course Details -->
-      <div class="p-6">
+      <!-- Course Image Placeholder -->
+      <div
+        class="h-40 bg-gradient-to-br from-blue-500 to-purple-500 rounded-t-lg relative overflow-hidden"
+      >
         <h2
-          class="text-lg font-bold text-gray-800 truncate group-hover:text-primary transition-colors"
+          class="absolute bottom-2 left-2 text-white font-bold text-lg bg-black bg-opacity-50 px-2 py-1 rounded-md"
         >
           {{ course.title }}
         </h2>
-        <br />
-        <p class="text-gray-600 text-sm">
-          Instructor:
-          <span class="font-medium">{{ course.instructor.username }}</span>
+      </div>
+
+      <!-- Course Content -->
+      <div class="p-6">
+        <!-- Instructor Info -->
+        <p class="text-gray-600 text-sm mb-2">
+          <span class="font-medium"
+            >Instructor: {{ course.instructor.username }}</span
+          >
         </p>
+        <!-- Institution Info -->
         {% if available in institutions %}
-        <p>Institution: {{ available.name }}</p>
+        <p class="text-gray-600 text-sm mb-4">
+          <span class="font-medium">Institution:</span> {{ available.name }}
+        </p>
         {% endif %}
-        <br />
-        <p class="text-gray-800 font-semibold text-lg">${{ course.price }}</p>
-        <!-- Call to Action Buttons -->
-        <div class="space-y-2">
+        <!-- Course Price -->
+        <p class="text-2xl font-semibold text-gray-800 mb-6">
+          ${{ course.price }}
+        </p>
+
+        <!-- Call-to-Action Buttons -->
+        <div class="space-y-4">
           {% if user.is_authenticated and user.is_instructor %}
           <hr class="my-2" />
           {% if user == course.instructor %}
           <a
             href="{% url 'courses:course_detail' course.pk %}"
-            class="inline-block bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition-colors w-full text-center"
+            class="block bg-blue-500 text-white text-center py-2 px-4 rounded-md hover:bg-blue-600 transition-colors"
           >
             Manage Course
           </a>
-          {% else %}
-          <!--           <a -->
-          {% if course.id in enrolled_courses %}
+          {% else %} {% if course.id in enrolled_courses %}
           <a
             href="{% url 'courses:course_detail' course.pk %}"
-            class="inline-block bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition-colors w-full text-center"
+            class="block bg-blue-500 text-white text-center py-2 px-4 rounded-md hover:bg-blue-600 transition-colors"
           >
             View Course
           </a>
           {% else %}
           <a
             href="{% url 'courses:course_enrollment' course.pk %}"
-            class="inline-block bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-600 transition-colors w-full text-center"
+            class="block bg-green-500 text-white text-center py-2 px-4 rounded-md hover:bg-green-600 transition-colors"
           >
             Enroll Course
           </a>
-          {% endif %}
-          <!--           <a -->
-          {% endif %}
+          {% endif %} {% endif %}
           <hr class="my-2" />
           {% elif user.is_authenticated and user.is_learner %}
           <hr class="my-2" />
           {% if course.id in enrolled_courses %}
           <a
             href="{% url 'courses:course_detail' course.pk %}"
-            class="inline-block bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-600 transition-colors w-full text-center"
+            class="block bg-green-500 text-white text-center py-2 px-4 rounded-md hover:bg-green-600 transition-colors"
           >
             Start Course
           </a>
           {% else %}
           <a
             href="{% url 'courses:course_enrollment' course.pk %}"
-            class="inline-block bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition-colors w-full text-center"
+            class="block bg-blue-500 text-white text-center py-2 px-4 rounded-md hover:bg-blue-600 transition-colors"
           >
             Enroll Now
           </a>
@@ -78,9 +95,9 @@
           {% else %}
           <a
             href="{% url 'users:login' %}"
-            class="inline-block bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition-colors w-full text-center"
+            class="block bg-blue-500 text-white text-center py-2 px-4 rounded-md hover:bg-blue-600 transition-colors"
           >
-            Login as Learner to Enroll
+            Login to Enroll
           </a>
           {% endif %}
         </div>
@@ -89,8 +106,10 @@
     {% endfor %}
   </div>
   {% else %}
-  <section>
-    <p class="text-gray-500 text-center">No courses found.</p>
+  <section class="py-12">
+    <p class="text-gray-500 text-center text-lg">
+      No courses are currently available. Please check back later!
+    </p>
   </section>
   {% endif %}
 </div>

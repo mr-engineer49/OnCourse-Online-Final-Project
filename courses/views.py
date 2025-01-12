@@ -5,6 +5,7 @@ from courses.forms import LessonCreationForm
 from institutions.models import AvailableInstitution, Institution
 from quizzes.forms import QuestionForm
 from quizzes.models import Question
+from webinars.models import Webinar
 from .models import Course, Enrollment, Lesson
 
 
@@ -16,10 +17,9 @@ def home_page(request):
         enrolled_courses = set(Enrollment.objects.filter(user=request.user).values_list('course_id', flat=True))
 
     institutions = Institution.objects.all()
+    webinars = Webinar.objects.all()[0:3]
 
-    
-    
-    context={'courses': courses, 'enrolled_courses': enrolled_courses, 'institutions': institutions}
+    context={'courses': courses, 'enrolled_courses': enrolled_courses, 'institutions': institutions, 'webinars': webinars}
     return render(request, 'courses/homepage.html', context)
 
 
