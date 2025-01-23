@@ -1,0 +1,43 @@
+---
+# https://docs.docker.com/compose/compose-file/#args
+
+version: "3"
+
+volumes:
+  db-data:
+  web-media:
+  log-data:
+
+networks:
+   network:
+    driver: bridge
+
+services:
+  db:
+    image: postgres:12.22
+    networks:
+      - network
+    container_name: courses_db
+    restart: always
+    environment:
+      - POSTGRES_DB=courses
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+    volumes:
+      - db-data:/var/lib/postgresql/data
+    ports:
+      - "5464:5432"
+
+  rabbitmq:
+    image: rabbitmq:latest
+    container_name: rabbit
+    hostname: rabbit
+    environment:
+      - RABBITMQ_DEFAULT_USER=admin
+      - RABBITMQ_DEFAULT_PASS=admin
+    ports:
+      - "5682:5672"
+      - "15682:15672"
+    networks:
+      - network
+
