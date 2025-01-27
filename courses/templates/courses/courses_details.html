@@ -18,6 +18,29 @@
       </h1>
       <p class="text-lg text-gray-600 mb-6">{{ course.description }}</p>
       <p class="text-2xl font-bold text-blue-600">Price: ${{ course.price }}</p>
+      <p class="text-2xl font-bold text-blue-600">Duration: {{ course.duration }} hours</p>
+      <p class="text-2xl font-bold text-blue-600">Level: {{ course.level }}</p>
+      <p class="text-2xl font-bold text-blue-600">Category: {{ course.category }}</p>
+      <p class="text-2xl font-bold text-blue-600">Instructor: {{ course.instructor }}</p>
+      <p class="text-2xl font-bold text-blue-600">Created: {{ course.created_at }}</p>
+      <!-- Edit / Delete Buttons -->
+       <div class="flex justify-end mt-6">
+        {% if request.user.is_instructor %}
+        <a
+          href="{% url 'courses:course_update' course.pk %}"
+          class="inline-block bg-gray-300 text-gray-700 px-6 py-3 rounded-lg hover:bg-gray-400 transition-colors"
+          aria-label="Edit course {{ course.title }}"
+        >
+          Edit
+        </a>
+        <a
+          href="#"
+          class="inline-block bg-red-500 text-white px-6 py-3 rounded-lg hover:bg-red-600 transition-colors"
+          aria-label="Delete course {{ course.title }}"
+        >
+          Delete
+        </a>
+        {% endif %}
     </div>
 
     <!-- Lessons List -->
@@ -29,13 +52,36 @@
         {% for lesson in course.lessons.all %}
         <li class="py-4">
           <!-- Lesson Title -->
-          <a
-            href="{% url 'courses:lesson_detail' course.pk lesson.pk %}"
-            class="block text-lg font-medium text-gray-800 hover:text-blue-500 transition-colors"
-          >
-            {{ lesson.title }}
-          </a>
+          <div class="flex items-center justify-between">
+            <a
+              href="{% url 'courses:lesson_detail' course.pk lesson.pk %}"
+              class="block text-lg font-medium text-gray-800 hover:text-blue-500 transition-colors"
+              aria-label="View lesson {{ lesson.title }}"
+            >
+              {{ lesson.title }}
+            </a>
+            <!-- Edit / Delete Buttons -->
+            {% if request.user.is_instructor %}
+            <div class="flex space-x-2">
+              <a
+                href="{% url 'courses:lesson_update' course.pk lesson.pk %}"
+                class="inline-block bg-gray-300 text-gray-700 px-4 py-2 rounded-lg hover:bg-gray-400 transition-colors"
+                aria-label="Edit lesson {{ lesson.title }}"
+              >
+                Edit
+              </a>
+              <a
+                href="{% url 'courses:lesson_delete' course.pk lesson.pk %}"
+                class="inline-block bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-600 transition-colors"
+                aria-label="Delete lesson {{ lesson.title }}"
+              >
+                Delete
+              </a>
+            </div>
+            {% endif %}
+          </div>
         </li>
+
         {% endfor %}
       </ul>
 
@@ -76,7 +122,7 @@
           Add Lesson to Course
         </a>
         <a
-          href="#"
+          href="{% url 'courses:quizz_creation' course.pk %}"
           class="inline-block bg-green-500 text-white px-6 py-3 rounded-lg hover:bg-green-600 transition-colors"
         >
           Add Quiz to Lesson

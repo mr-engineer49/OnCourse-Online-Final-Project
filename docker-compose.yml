@@ -1,0 +1,61 @@
+version: "3.8" # Use a modern version (3.8+ recommended)
+
+volumes:
+  db-data:
+  web-media:
+  log-data:
+
+
+networks:
+  network:
+    driver: bridge
+
+services:
+  db:
+    image: postgres:latest
+    networks:
+      - network
+    container_name: courses_db
+    restart: always
+    environment:
+      - POSTGRES_DB=courses
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=admin123
+    volumes:
+      - db-data:/var/lib/postgresql/data
+    ports:
+      - "5464:5432" # Host:5464 → Container:5432
+
+  rabbitmq:
+    image: rabbitmq:latest
+    container_name: rabbit
+    hostname: rabbit
+    environment:
+      - RABBITMQ_DEFAULT_USER=admin
+      - RABBITMQ_DEFAULT_PASS=admin
+    ports:
+      - "5682:5672" # AMQP port
+      - "15682:15672" # Management UI port
+    networks:
+      - network
+
+  web:
+    build: .
+    command: python manage.py runserver 0.0.0.0:8000
+    volumes:
+      - .:/app # Ensure this matches your Dockerfile's WORKDIR
+    ports:
+      - "8082:8000"
+    depends_on:
+      - db
+      - rabbitmq # Add if your app uses RabbitMQ
+    networks:
+      - network
+    environment:
+      # Add environment variables for Django
+      - DB_HOST=db
+      - DB_PORT=5432
+      - DB_NAME=courses
+      - DB_USER=postgres
+      - DB_PASSWORD=admin123
+      # Add other vars (e.g., SECRET_KEY) as needed

@@ -5,7 +5,7 @@ from .models import Course, Lesson, Enrollment
 class CourseCreationForm(forms.ModelForm):
     class Meta:
         model = Course
-        fields = ['title', 'description', 'price']
+        fields = '__all__'
 
     def form_valid(self, form):
         form.instance.instructor = self.request.user  # Set the instructor as the logged-in user

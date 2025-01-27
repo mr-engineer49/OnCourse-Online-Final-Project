@@ -1,0 +1,30 @@
+{% extends 'courses/base.html' %}
+<!-- The content block is used to display the main content of the page. -->
+{% block content %}
+<section>
+  <h2>Update Course</h2>
+  <form method="post">
+    {% csrf_token %} {{ update_course_form.as_p }}
+    <button type="submit">Update Course</button>
+  </form>
+</section>
+{% endblock %}
+<!-- The extra_js block is used to include any additional JavaScript code needed for the page. -->
+{% block extra_js %}
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const videoInput = document.getElementById("id_video");
+    const videoPreview = document.getElementById("video-preview");
+
+    videoInput.addEventListener("change", function () {
+      const file = videoInput.files[0];
+      if (file) {
+        const videoURL = URL.createObjectURL(file);
+        videoPreview.src = videoURL;
+      } else {
+        videoPreview.src = "";
+      }
+    });
+  });
+</script>
+{% endblock %}

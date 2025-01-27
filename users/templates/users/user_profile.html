@@ -88,11 +88,15 @@
       <div
         class="bg-gray-100 rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300"
       >
+        {% if course.image_url %}
         <img
           src="{{ course.image_url }}"
           alt="{{ course.title }}"
           class="w-full h-48 object-cover"
         />
+        {% else %}
+        <p></p>
+        {% endif %}
         <div class="p-6">
           <h4 class="text-lg font-semibold text-gray-800">
             {{ course.title }}

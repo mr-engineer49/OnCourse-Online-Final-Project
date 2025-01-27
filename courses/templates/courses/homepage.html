@@ -83,11 +83,15 @@
       <div
         class="bg-white rounded-lg shadow-lg overflow-hidden hover:shadow-2xl transition-shadow duration-300"
       >
+        {% if course.image_url %}
         <img
           src="{{ course.image_url }}"
           alt="{{ course.title }}"
           class="w-full h-48 object-cover"
         />
+        {% else %}
+        <p></p>
+        {% endif %}
         <div class="p-6">
           <h3 class="text-xl font-bold text-gray-800 truncate mb-2">
             {{ course.title }}
@@ -99,12 +103,6 @@
           <p class="text-lg font-semibold text-gray-800 mb-4">
             ${{ course.price }}
           </p>
-          <a
-            href="{% url 'courses:course_detail' course.pk %}"
-            class="block bg-blue-600 text-white text-center px-4 py-2 rounded-md hover:bg-blue-700 transition duration-300"
-          >
-            View Details
-          </a>
         </div>
       </div>
       {% endfor %}
@@ -151,12 +149,22 @@
         <p class="text-gray-600 mb-4">
           Starting on: {{ webinar.start_time|date:"d M Y" }}
         </p>
+        {% if webinar.id in attended_webinars %}
+        <a>
+          <span
+            class="block text-center bg-green-500 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-green-600 transition duration-200"
+          >
+            Attended
+          </span>
+        </a>
+        {% else %}
         <a
           href="{% url 'webinars:webinar_attend' webinar.pk %}"
           class="text-blue-600 font-medium hover:underline"
         >
           Attend Webinar →
         </a>
+        {% endif %}
       </div>
       {% endfor %}
     </div>
