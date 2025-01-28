@@ -1,4 +1,4 @@
-version: "3.8" # Use a modern version (3.8+ recommended)
+version: "3.8"
 
 volumes:
   db-data:
@@ -24,7 +24,7 @@ services:
     volumes:
       - db-data:/var/lib/postgresql/data
     ports:
-      - "5464:5432" # Host:5464 → Container:5432
+      - "5432:5432" # Fixed port mapping
 
   rabbitmq:
     image: rabbitmq:latest
@@ -34,28 +34,40 @@ services:
       - RABBITMQ_DEFAULT_USER=admin
       - RABBITMQ_DEFAULT_PASS=admin
     ports:
-      - "5682:5672" # AMQP port
-      - "15682:15672" # Management UI port
+      - "5682:5672"
+      - "15682:15672"
     networks:
       - network
 
   web:
+    # <-- Ensure this is at the same indentation level as `db` and `rabbitmq`
     build: .
     command: python manage.py runserver 0.0.0.0:8000
     volumes:
-      - .:/app # Ensure this matches your Dockerfile's WORKDIR
+      - .:/app
     ports:
       - "8082:8000"
     depends_on:
       - db
-      - rabbitmq # Add if your app uses RabbitMQ
+      - rabbitmq
     networks:
       - network
     environment:
-      # Add environment variables for Django
       - DB_HOST=db
       - DB_PORT=5432
       - DB_NAME=courses
       - DB_USER=postgres
-      - DB_PASSWORD=admin123
-      # Add other vars (e.g., SECRET_KEY) as needed
+      - DB_PASSWORD=@emin12332#@#!#@poeres
+
+  pgadmin:
+    # Added pgAdmin service
+    image: dpage/pgadmin4
+    environment:
+      - PGADMIN_DEFAULT_EMAIL=admin@example.com
+      - PGADMIN_DEFAULT_PASSWORD=admin
+    ports:
+      - "5050:80"
+    networks:
+      - network
+    depends_on:
+      - db

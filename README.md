@@ -1,7 +1,3 @@
-Below is a detailed `README.md` file that explains how to download, set up, edit, and run the **Online Course Platform** application locally. It also includes instructions for automatically installing dependencies, activating the virtual environment, and running the application.
-
----
-
 # **Online Course Platform**
 
 This is a **Django-based web application** for managing and enrolling in online courses. It allows instructors to create and manage courses, while learners can enroll in courses and track their progress.
@@ -21,6 +17,8 @@ This is a **Django-based web application** for managing and enrolling in online 
 7. [Troubleshooting](#troubleshooting)
 8. [Contributing](#contributing)
 9. [License](#license)
+10. [PostgreSQL Configuration](#postgresql-configuration)
+11. [Docker Configuration](#docker-configuration)
 
 ---
 
@@ -179,6 +177,101 @@ online-course-platform/
 - **`setup.bat`**: Windows setup script.
 - **`setup.sh`**: macOS/Linux setup script.
 - **`README.md`**: This file.
+
+---
+
+## **PostgreSQL Configuration**
+
+- **Database Name**: `courses`
+- **User**: `postgres`
+- **Password**: `admin123`
+- **Host**: `db`
+- **Port**: `5432`
+
+---
+
+## **Docker Configuration**
+
+The project uses Docker to manage services. The `docker-compose.yml` file defines the following services:
+
+- **db**: PostgreSQL database service.
+- **rabbitmq**: RabbitMQ message broker service.
+- **web**: Django web application service.
+- **pgadmin**: pgAdmin service for managing the PostgreSQL database.
+
+### Example `docker-compose.yml` Configuration:
+```yaml
+version: "3.8"
+
+volumes:
+  db-data:
+  web-media:
+  log-data:
+
+networks:
+  network:
+    driver: bridge
+
+services:
+  db:
+    image: postgres:latest
+    networks:
+      - network
+    container_name: courses_db
+    restart: always
+    environment:
+      - POSTGRES_DB=courses
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=admin123
+    volumes:
+      - db-data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+
+  rabbitmq:
+    image: rabbitmq:latest
+    container_name: rabbit
+    hostname: rabbit
+    environment:
+      - RABBITMQ_DEFAULT_USER=admin
+      - RABBITMQ_DEFAULT_PASS=admin
+    ports:
+      - "5682:5672"
+      - "15682:15672"
+    networks:
+      - network
+
+  web:
+    build: .
+    command: python manage.py runserver 0.0.0.0:8000
+    volumes:
+      - .:/app
+    ports:
+      - "8082:8000"
+    depends_on:
+      - db
+      - rabbitmq
+    networks:
+      - network
+    environment:
+      - DB_HOST=db
+      - DB_PORT=5432
+      - DB_NAME=courses
+      - DB_USER=postgres
+      - DB_PASSWORD=admin123
+
+  pgadmin:
+    image: dpage/pgadmin4
+    environment:
+      - PGADMIN_DEFAULT_EMAIL=admin@example.com
+      - PGADMIN_DEFAULT_PASSWORD=admin
+    ports:
+      - "5050:80"
+    networks:
+      - network
+    depends_on:
+      - db
+```
 
 ---
 

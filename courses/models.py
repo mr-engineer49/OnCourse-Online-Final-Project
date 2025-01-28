@@ -22,7 +22,6 @@ class Course(models.Model):
     category = models.CharField(max_length=10, default='select', null=True, blank=True, choices=COURSE_CATEGORIES)
     # other fields
     title = models.CharField(max_length=200)
-    image_url = models.ImageField(upload_to='courses/', null=True, blank=True, default=None)
     description = models.TextField()
     instructor = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
     price = models.DecimalField(max_digits=10, decimal_places=2)
